@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Настроение сегодня</title>
+
+    <!-- React 18 CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel для JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .emojis span {
+            font-size: 40px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .emojis span:hover {
+            transform: scale(1.2);
+        }
+        .selected {
+            margin-top: 20px;
+            font-size: 26px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+function MoodDiary() {
+    const moods = ["😀", "🙂", "😐", "😔", "😡"];
+    const [mood, setMood] = React.useState(
+        localStorage.getItem("todayMood") || ""
+    );
+
+    function selectMood(m) {
+        setMood(m);
+        localStorage.setItem("todayMood", m);
+    }
+
+    return (
+        <div className="container">
+            <h2>Выбери настроение на сегодня</h2>
+            <div className="emojis">
+                {moods.map((m) => (
+                    <span key={m} onClick={() => selectMood(m)}>
+                        {m}
+                    </span>
+                ))}
+            </div>
+
+            {mood && (
+                <div className="selected">
+                    Твоё настроение сегодня: <strong>{mood}</strong>
+                </div>
+            )}
+        </div>
+    );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<MoodDiary />);
+
+</script>
+
+</body>
+</html>
